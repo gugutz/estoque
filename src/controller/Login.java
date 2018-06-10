@@ -1,4 +1,4 @@
-package login;
+package controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class LoginScreen {
+public class Login {
 
     /**
      * Method to change between scenes
@@ -17,7 +17,7 @@ public class LoginScreen {
     public void loginButtonClicked(ActionEvent event) throws IOException {
 
         // goes to the main screen after logging in
-        Parent mainScreenParent = FXMLLoader.load(getClass().getResource("../main_screen/MainScreen.fxml"));
+        Parent mainScreenParent = FXMLLoader.load(getClass().getResource("../view/Main.fxml"));
         Scene mainScreenScene = new Scene(mainScreenParent, 800, 400);
 
         //This line gets the Stage information
