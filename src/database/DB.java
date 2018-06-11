@@ -1,7 +1,6 @@
 package database;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,33 +9,44 @@ import java.util.Properties;
 
 public class DB {
 
-    public static Connection connect() throws SQLException {
-        Properties props = new Properties();
-        FileInputStream propsFile = null;
-        Connection connection = null;
-        String driverClass = props.getProperty("DB_DRIVER_CLASS");
-        String host = props.getProperty("DB_URL");
-        String user = props.getProperty("DB_USERNAME");
-        String password = props.getProperty("DB_PASSWORD");
+    private static Properties dbProps = new Properties();
+    private static FileInputStream propsFile = null;
+    private static Connection connection = null;
 
+    // Database Information
+    private static String driverClass = dbProps.getProperty("DB_DRIVER_CLASS");
+    private static String host = dbProps.getProperty("DB_URL");
+    private static String dbName = dbProps.getProperty("DB_NAME");
+    private static String dbUser = dbProps.getProperty("DB_USERNAME");
+    private static String dbPassword = dbProps.getProperty("DB_PASSWORD");
+
+    public static Connection connect() throws SQLException {
+
+        driverClass = dbProps.getProperty("DB_DRIVER_CLASS");
+        host = dbProps.getProperty("DB_URL");
+        dbName = dbProps.getProperty("DB_NAME");
+        dbUser = dbProps.getProperty("DB_USERNAME");
+        dbPassword = dbProps.getProperty("DB_PASSWORD");
+        // Tries to connect
         try {
             propsFile = new FileInputStream("src/database/db.properties");
-            props.load(propsFile);
+            dbProps.load(propsFile);
 
-            String connectString = String.format("jdbc:mariadb://%s/DB?user=%s&password=%s", host, user, password );
-//            connection = DriverManager.connect("jdbc:mariadb://localhost:3306/DB?user=root&password=manenos");
-            connection = DriverManager.getConnection(connectString);
+//            String connectString = "jdbc:mariadb://" + host + dbName + "?user=" + dbUser + "&password=" + dbPassword;
+            connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306/estoque?user=root&password=manenos");
+//            connection = DriverManager.getConnection(host + dbName, dbUser, dbPassword);
+            System.out.println("conected to database succesfully!");
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("erro:" + e);
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
+            System.out.println("erro:" + e);
+
         }
+// finally {
+//            if (connection != null) {
+//                connection.close();
+//            }
+//        }
         return connection;
     }
 }
