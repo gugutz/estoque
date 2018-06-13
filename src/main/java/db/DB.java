@@ -1,4 +1,4 @@
-package main.java.db;
+package db;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -29,11 +29,11 @@ public class DB {
         dbPassword = dbProps.getProperty("DB_PASSWORD");
         // Tries to connect
         try {
-            propsFile = new FileInputStream("src/db/db.properties");
+            propsFile = new FileInputStream("db/db.properties");
             dbProps.load(propsFile);
 
 //            String connectString = "jdbc:mariadb://" + host + dbName + "?user=" + dbUser + "&password=" + dbPassword;
-            connection = DriverManager.getConnection("jdbc:sqlite:app.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:/db/app.db");
 //            connection = DriverManager.getConnection(host + dbName, dbUser, dbPassword);
             System.out.println("conected to db succesfully!");
 

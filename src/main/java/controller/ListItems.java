@@ -1,6 +1,6 @@
-package main.java.controller;
+package controller;
 
-import main.java.db.DB;
+import db.DB;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

@@ -1,6 +1,6 @@
-package main.java.controller;
+package controller;
 
-import main.java.db.DB;
+import db.DB;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;

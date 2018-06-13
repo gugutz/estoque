@@ -1,5 +1,3 @@
-package main.java;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -24,7 +22,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("main/resources/fxml/Main.fxml"));
+        root = FXMLLoader.load(getClass().getResource("fxml/Main.fxml"));
         mainSceneWidth = 1000;
         getMainSceneHeight = 800;
         stageTitle = "Sistema de Estoque v0.1";

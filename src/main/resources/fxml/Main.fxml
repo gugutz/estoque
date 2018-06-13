@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane minHeight="400.0" minWidth="800.0" xmlns="http://javafx.com/javafx/8.0.162-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.MainController">
+<BorderPane minHeight="400.0" minWidth="800.0" xmlns="http://javafx.com/javafx/8.0.162-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
    <top>
       <VBox prefHeight="39.0" prefWidth="400.0" BorderPane.alignment="CENTER">
          <children>

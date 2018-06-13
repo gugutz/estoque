@@ -1,4 +1,4 @@
-package main.java.controller;
+package controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,11 +19,9 @@ public class MainController {
     public Label bottomInfoLabel;
     @FXML
     public BorderPane contentPane;
-    @FXML
-    public AnchorPane rootPane;
 
     public void setContentPane(String path) throws IOException {
-        String contentLocation = "/main/resources/fxml/";
+        String contentLocation = "/fxml/";
         String contentPath = (contentLocation + path);
         contentPane.getChildren().clear();
         contentPane.getChildren().add(FXMLLoader.load(getClass().getResource(contentPath)));

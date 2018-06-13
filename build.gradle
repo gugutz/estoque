@@ -20,14 +20,14 @@ plugins {
 apply plugin: 'java'
 
 
-sourceSets {
-    main {
-        resources {
-            srcDirs = ["src/main/java"]
-            includes = ["**/*.fxml"]
-        }
-    }
-}
+//sourceSets {
+//    main {
+//        resources {
+//            srcDirs = ["src/main/java"]
+//            includes = ["**/*.fxml"]
+//        }
+//    }
+//}
 
 repositories {
     mavenLocal()
@@ -81,7 +81,7 @@ jfx {
 
 jar {
     manifest {
-        attributes 'Implementation-Title': 'Estque App',
+        attributes 'Implementation-Title': 'Estoque App',
                    'Implementation-Version': version
     }
 }
