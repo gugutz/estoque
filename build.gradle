@@ -20,19 +20,9 @@ plugins {
 apply plugin: 'java'
 
 
-//sourceSets {
-//    main {
-//        resources {
-//            srcDirs = ["src/main/java"]
-//            includes = ["**/*.fxml"]
-//        }
-//    }
-//}
-
 repositories {
     mavenLocal()
     mavenCentral()
-    // Use jcenter for resolving your dependencies.
     jcenter()
 }
 
@@ -40,22 +30,17 @@ dependencies{
     // Use JUnit test framework
     testCompile 'junit:junit:4.12'
 
-    compile group: 'commons-collections', name: 'commons-collections', version: '3.2.2'
     testCompile group: 'junit', name: 'junit', version: '4.+'
 }
 
 apply plugin: 'javafx-gradle-plugin'
 
 
-// Define the main class for the application
-mainClassName = 'App'
-
+mainClassName = 'main.java.App'
 version = '1.0'
 
 
 // configure javafx-gradle-plugin
-// for all available settings please look at the class "JavaFXGradlePluginExtension"
-
 jfx {
     verbose = true
     mainClass = "App"
@@ -96,16 +81,11 @@ build.dependsOn(copyDependenciesToTarget)
 
 
 jar {
-    manifest.attributes(
-            "Main-Class": "Main",
-            "Class-Path": configurations.compile.collect { 'libs/' + it.getName()}.join(' ')
-    )
-}
-
-jar {
     manifest {
         attributes 'Implementation-Title': 'Estoque App',
-                   'Implementation-Version': version
+                'Implementation-Version': version,
+                "Main-Class": "main.java.App",
+                "Class-Path": configurations.compile.collect { 'libs/' + it.getName() }.join(' ')
     }
 }
 

@@ -1,5 +1,6 @@
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -19,23 +20,22 @@ public class App extends Application {
     int mainSceneWidth, getMainSceneHeight;
 
     // the parent is the fxml main.resources.fxml that is loaded in the scene of the stage
-    Parent root;
+    Parent rootElement;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("fxml/Main.fxml"));
+        rootElement = FXMLLoader.load(getClass().getResource("fxml/Main.fxml"));
         mainSceneWidth = 1000;
         getMainSceneHeight = 800;
         stageTitle = "Sistema de Estoque v0.1";
         stage = primaryStage;
         stage.setTitle(stageTitle);
 
-        mainScene = new Scene(root, mainSceneWidth, getMainSceneHeight);
+        mainScene = new Scene(rootElement, mainSceneWidth, getMainSceneHeight);
 
         stage.setScene(mainScene);
         stage.show();
     }
-
     public static void main(String[] args) {
         launch(args);
     }

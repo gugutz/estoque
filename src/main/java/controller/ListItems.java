@@ -1,80 +1,185 @@
 package controller;
 
 import db.DB;
-import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.*;
+import javafx.util.Callback;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+
+import java.io.IOException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
-import java.util.List;
+import java.util.ResourceBundle;
 
 
-public class ListItems {
-    @FXML private TableView<User> Products;
-    @FXML private TableColumn<User, String> productIdColumn;
-    @FXML private TableColumn<User, String> productNameColumn;
-    @FXML private TableColumn<User, String> productDescriptionColumn;
+public class ListItems implements Initializable {
+
+    @FXML
+    private TableView products_table;
+    @FXML
+    private Label bottomInfoLabel;
 
 
-    private static final String QUERY = "SELECT id,descricao,linha from perfis ORDER DESC";
+    private ObservableList<ObservableList> tableData = FXCollections.observableArrayList();
+    private static final String SQL_QUERY = "SELECT rowid, codigo, descricao, linha, peso from perfis;";
 
-        public void list() {
-        //using try-with-resources to avoid closing resources (boiler plate code)
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        // instantiating a router object to change panes when needed
+        Router router = new Router();
+
         try {
-            Connection con = DB.connect();
-            System.out.println("conectado");
-            Statement stmt = con.createStatement();
-            ResultSet results = stmt.executeQuery(QUERY);
+            Connection connection = DB.connect();
+
+            Statement stmt = connection.createStatement();
+            ResultSet results = stmt.executeQuery(SQL_QUERY);
 
 
-        while(results.next()){
-            int id = results.getInt("id");
-            String name = results.getString("descricao");
-            String description = results.getString("linha");
+            /**********************************
+             * TABLE COLUMN ADDED DYNAMICALLY *
+             **********************************/
+            for(int i=0 ; i<results.getMetaData().getColumnCount(); i++){
+                //We are using non property style for making dynamic table
+                final int j = i;
+                TableColumn col = new TableColumn(results.getMetaData().getColumnName(i+1));
+                 col.setCellValueFactory((Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>) param ->
+                         new SimpleStringProperty(param.getValue().get(j).toString()));
 
-            productIdColumn.setCellValueFactory(new PropertyValueFactory<User, String>("id"));
-            productNameColumn.setCellValueFactory(new PropertyValueFactory<User, String>("name"));
-            productDescriptionColumn.setCellValueFactory(new PropertyValueFactory<User, String>("active"));
-
-            tableView.getItems().setAll(parseUserList());
-
-            System.out.println(id + "," +name+ "," +description+ ",");
+                products_table.getColumns().addAll(col);
+                System.out.println("Column ["+i+"] ");
             }
 
-
-                // begin stack overflow code
-                List<Integer> intValues = Arrays.asList(1, 2, 3, 4, 5);
-                List<String> stringValues = Arrays.asList("One", "Two", "Three", "Four", "Five");
-
-                TableView<Integer> table = new TableView<>();
-                for (int i = 0; i < intValues.size() && i < stringValues.size(); i++) {
-                    table.getItems().add(i);
+            /********************************
+             * Data added to ObservableList *
+             ********************************/
+            while(results.next()){
+                //Iterate Row
+                ObservableList<String> row = FXCollections.observableArrayList();
+                for(int i=1 ; i<=results.getMetaData().getColumnCount(); i++){
+                    //Iterate Column
+                    row.add(results.getString(i));
                 }
+                System.out.println("Row added "+row );
+                tableData.add(row);
 
-                TableColumn<Integer, Number> intColumn = new TableColumn<>("Value");
-                intColumn.setCellValueFactory(cellData -> {
-                    Integer rowIndex = cellData.getValue();
-                    return new ReadOnlyIntegerWrapper(intValues.get(rowIndex));
+
+                //
+                // building the context menu
+                //
+                final ContextMenu contextMenu = new ContextMenu();
+
+                // EDIT CONTEXT MENU
+                MenuItem item0 = new MenuItem("Editar Item");
+                item0.setOnAction(new EventHandler<ActionEvent>() {
+                    public void handle(ActionEvent e) {
+                        try {
+                            int id = results.getInt("id");
+                            ItemDetails item = new ItemDetails(id);
+                            router.newScreen("ItemDetails");
+                        } catch (IOException e1) {
+                            System.out.println("nao achou tela do itemdetails");
+                            e1.printStackTrace();
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
+                        System.out.println("About");
+                    }
+                });
+                MenuItem item1 = new MenuItem("Deletar Item");
+                item1.setOnAction(new EventHandler<ActionEvent>() {
+                    public void handle(ActionEvent e) {
+                        System.out.println("About");
+                    }
+                });
+                MenuItem item2 = new MenuItem("Ver detalhes");
+                item2.setOnAction(new EventHandler<ActionEvent>() {
+                    public void handle(ActionEvent e) {
+                        System.out.println("Preferences");
+                    }
                 });
 
-                TableColumn<Integer, String> nameColumn = new TableColumn<>("Name");
-                nameColumn.setCellValueFactory(cellData -> {
-                    Integer rowIndex = cellData.getValue();
-                    return new ReadOnlyStringWrapper(stringValues.get(rowIndex));
-                });
+                // adding the submenu items to the context menu
+                contextMenu.getItems().addAll(item0, item1, item2);
 
-                table.getColumns().add(intColumn);
-                table.getColumns().add(nameColumn);
-                // end of stackoverflow code
+                // finally adding the context menu do the Items Table
+                row.contextMenuProperty().bind(
+                        Bindings.when(row.emptyProperty())
+                                .then((ContextMenu)null)
+                                .otherwise(contextMenu)
+                );
+                tableData.setContextMenu(contextMenu);
+            }
 
-        } catch (SQLException e) {
-            System.out.println("conexao falhou");
+            //FINALLY ADDED TO TableView
+            products_table.setItems(tableData);
+
+
+
+
+        }catch(Exception e){
             e.printStackTrace();
+            System.out.println("Error on Building Data");
         }
     }
+
+
+
+
+//
+//            String id;
+//            String codigo;
+//            String descricao;
+//            String linha;
+//            String peso;
+//
+//
+//            while (results.next()) {
+//
+//                id = String.valueOf(results.getInt("rowid"));
+//                codigo = results.getString("codigo");
+//                descricao = results.getString("descricao");
+//                linha = results.getString("linha");
+//                peso = String.valueOf(results.getDouble("peso"));
+//
+//                // generates the table object using the personalized constructor
+//                tableData.add(new TableItem(id, codigo, descricao, linha, peso));
+//
+//                System.out.println(id + " " + codigo + " " +  descricao + " " + linha + " " +  peso);
+//            }
+//
+//            col_id.setCellValueFactory(new PropertyValueFactory<TableItem, String>("id"));
+//            col_codigo.setCellValueFactory(new PropertyValueFactory<TableItem, String>("codigo"));
+//            col_descricao.setCellValueFactory(new PropertyValueFactory<TableItem, String>("descricao"));
+//            col_linha.setCellValueFactory(new PropertyValueFactory<TableItem, String>("linha"));
+//            col_peso.setCellValueFactory(new PropertyValueFactory<TableItem, String>("peso"));
+//
+//            products_table.setItems(tableData);
+
+//            //encerrando a conexão
+//            stmt.close();
+//            connection.close();
+
+
+//        catch (SQLException e) {
+//            System.out.println("conexao falhou");
+//            Logger.getLogger(ListItems.class.getName()).log(Level.SEVERE, null, e);
+//            e.printStackTrace();
+//        }
+
+
+
 }
+
 
