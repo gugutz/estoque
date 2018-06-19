@@ -17,7 +17,7 @@ import java.io.IOException;
 public class Router {
 
     @FXML
-    public Button linkMain, linkAddItem, linkRemoveItem;
+    public Button linkMain, linkAddItem, linkRemoveItem, linkItemDetails;
     @FXML
     public Label bottomInfoLabel;
     @FXML
@@ -72,7 +72,7 @@ public class Router {
     }
 
     public void linkMainClicked(ActionEvent actionEvent) throws IOException {
-        setContentPane("ListItems");
+        setContentPane("ListItems2");
     }
 
     public void linkAddItemClicked(ActionEvent actionEvent) throws IOException {
@@ -83,6 +83,9 @@ public class Router {
         setContentPane("RemoveItem");
     }
 
+    public void linkItemDetailsClicked(ActionEvent actionEvent) throws IOException {
+        setContentPane("ItemDetails");
+    }
 
     public void closeApplication(ActionEvent e) {
             Platform.exit();

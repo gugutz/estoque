@@ -113,13 +113,7 @@ public class ListItems implements Initializable {
                 // adding the submenu items to the context menu
                 contextMenu.getItems().addAll(item0, item1, item2);
 
-                // finally adding the context menu do the Items Table
-                row.contextMenuProperty().bind(
-                        Bindings.when(row.emptyProperty())
-                                .then((ContextMenu)null)
-                                .otherwise(contextMenu)
-                );
-                tableData.setContextMenu(contextMenu);
+                products_table.setContextMenu(contextMenu);
             }
 
             //FINALLY ADDED TO TableView

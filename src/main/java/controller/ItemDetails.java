@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import model.TableItem;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -38,7 +39,9 @@ public class ItemDetails implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        final String SQL_QUERY = "SELECT rowid, codigo, descricao, linha, peso from perfis where rowid = " + this.id + ";";
+//        final String SQL_QUERY = "SELECT rowid, codigo, descricao, linha, peso from perfis where rowid = " + this.id + ";";
+        final String SQL_QUERY = "SELECT rowid, codigo, descricao, linha, peso from perfis where rowid = '1'';";
+
         try {
             Connection connection = DB.connect();
 
@@ -55,4 +58,7 @@ public class ItemDetails implements Initializable {
             e.printStackTrace();
         }
     }
+
+
+
 }

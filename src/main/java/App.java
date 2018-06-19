@@ -12,11 +12,11 @@ import java.io.IOException;
 public class App extends Application {
 
     // stage = window. think of stage as the app window
-    Stage stage;
-    String stageTitle;
+    private Stage stage;
+    private String stageTitle;
 
     // the scene is the content of the window
-    Scene mainScene;
+    private Scene mainScene;
     int mainSceneWidth, getMainSceneHeight;
 
     // the parent is the fxml main.resources.fxml that is loaded in the scene of the stage
@@ -24,7 +24,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        rootElement = FXMLLoader.load(getClass().getResource("fxml/Main.fxml"));
+        rootElement = FXMLLoader.load(getClass().getResource("/fxml/Main.fxml"));
         mainSceneWidth = 1000;
         getMainSceneHeight = 800;
         stageTitle = "Sistema de Estoque v0.1";
