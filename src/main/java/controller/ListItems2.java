@@ -1,8 +1,6 @@
 package controller;
 
 import db.DB;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
 import model.TableItem;
 
 import java.io.IOException;
@@ -56,7 +53,7 @@ public class ListItems2 implements Initializable {
                 String linha = results.getString("linha");
                 Double peso = results.getDouble("peso");
                 row.add(new TableItem(rowid, codigo, descricao, linha, peso));
-                rowList.add(new TableItem(rowid.toString(), codigo, descricao, linha, peso.toString()));
+                rowList.add(new TableItem(rowid, codigo, descricao, linha, peso));
 
             }
 
@@ -81,10 +78,55 @@ public class ListItems2 implements Initializable {
         products_table.setItems(row);
     }
 
-    public void getSelectedItem() {
+    public TableItem getSelectedItem() {
         TableItem selectedItem = products_table.getSelectionModel().getSelectedItem();
         System.out.println(selectedItem.getId());
+        return selectedItem;
     }
+
+
+
+    //
+//    // building the context menu
+//    //
+//    final ContextMenu contextMenu = new ContextMenu();
+//
+//    // EDIT CONTEXT MENU
+//    MenuItem item0 = new MenuItem("Editar Item");
+//                item0.setOnAction(new EventHandler<ActionEvent>() {
+//        public void handle(ActionEvent e) {
+//            try {
+//                TableItem row = getSelectedItem();
+//                int itemId = row.getId();
+//                ItemDetails details = new ItemDetails(itemId);
+//                router.newScreen("ItemDetails");
+//            } catch (IOException e1) {
+//                System.out.println("nao achou tela do itemdetails");
+//                e1.printStackTrace();
+//            } catch (SQLException e1) {
+//                e1.printStackTrace();
+//            }
+//            System.out.println("About");
+//        }
+//    });
+//    MenuItem item1 = new MenuItem("Deletar Item");
+//                item1.setOnAction(new EventHandler<ActionEvent>() {
+//        public void handle(ActionEvent e) {
+//            System.out.println("About");
+//        }
+//    });
+//    MenuItem item2 = new MenuItem("Ver detalhes");
+//                item2.setOnAction(new EventHandler<ActionEvent>() {
+//        public void handle(ActionEvent e) {
+//            System.out.println("Preferences");
+//        }
+//    });
+//
+//    // adding the submenu items to the context menu
+//                contextMenu.getItems().addAll(item0, item1, item2);
+//
+//                products_table.setContextMenu(contextMenu);
+//}
 
 }
 
