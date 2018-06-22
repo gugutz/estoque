@@ -1,7 +1,0 @@
-.table-view, .tree-table-view {
-    -fx-table-border-color: transparent;
-    -fx-table-cell-border-color: -fx-box-broder; /* horizontal lines */
-    -fx-background-color: transparent;
-}
-
-

@@ -1,23 +1,21 @@
-buildscript {
-    dependencies {
-        classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: '8.8.2'
-    }
-
-    repositories {
-        mavenLocal()
-        mavenCentral()
-    }
-}
-
-plugins {
-    // Apply the java plugin to add support for Java
-    id 'java'
-
-    // Apply the application plugin to add support for building an application
-    id 'application'
-}
-
 apply plugin: 'java'
+
+//the application plugin creates a dist/ folder containing the class files and startup startScripts
+//it helps create an JVM executable application for deployment0
+apply plugin: 'application'
+// the mainClassName is required by the application plugin
+mainClassName = "App"
+
+version = '1.0'
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Estoque App',
+                'Implementation-Version': version,
+                "Main-Class": "App"
+//                "Class-Path": configurations.compile.collect { 'libs/' + it.getName() }.join(' ')
+    }
+}
 
 
 repositories {
@@ -26,77 +24,82 @@ repositories {
     jcenter()
 }
 
-dependencies{
-    // Use JUnit test framework
-    testCompile 'junit:junit:4.12'
 
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile group: 'junit', name: 'junit', version: '4.+'
-}
-
-apply plugin: 'javafx-gradle-plugin'
-
-
-mainClassName = 'main.java.App'
-version = '1.0'
-
-
-// configure javafx-gradle-plugin
-jfx {
-    verbose = true
-    mainClass = "App"
-    jfxAppOutputDir = "build/jfx/app"
-    jfxMainAppJarName = "estoque-jf.jar"
-    deployDir = "src/main/deploy"
-    useEnvironmentRelativeExecutables = true
-    libFolderName = "lib"
-
-    // gradle jfxJar
-    css2bin = false
-    preLoader = null // String
-    updateExistingJar = false
-    allPermissions = false
-    manifestAttributes = null // Map<String, String>
-    addPackagerJar = true
-    copyAdditionalAppResourcesToJar = false
-    skipCopyingDependencies = false
-    useLibFolderContentForManifestClasspath = false
-    fixedManifestClasspath = null
+//    testCompile 'junit:junit:4.12'
+//    classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: '8.8.2'
 
 }
 
-task copyDependenciesToTarget(type: Copy) {
-    println 'Copying dependencies to target...'
 
-    configurations.compile.collect().each { compileDependency ->
-        copy {
-            with from (compileDependency.getPath()) {
-                include '*'
-            }
-            into 'target/libs/libs'
-        }
-    }
-}
-
-build.dependsOn(copyDependenciesToTarget)
-
-
-jar {
-    manifest {
-        attributes 'Implementation-Title': 'Estoque App',
-                'Implementation-Version': version,
-                "Main-Class": "main.java.App",
-                "Class-Path": configurations.compile.collect { 'libs/' + it.getName() }.join(' ')
-    }
-}
+//apply plugin: 'javafx-gradle-plugin'
 
 test {
     systemProperties 'property': 'value'
 }
 
+
 uploadArchives {
     repositories {
-       flatDir {
-           dirs 'repos'
-       }
+        flatDir {
+            dirs 'repos'
+        }
     }
 }
+
+//// this creates a distribution that can be shipped for use.
+//task dist(type: Zip) {
+//    dependsOn spiJar
+//    from 'src/dist'
+//    into('libs') {
+//        from spiJar.archivePath
+//        from configurations.runtime
+//    }
+//}
+
+artifacts {
+//    archives dist
+}
+
+
+
+
+//plugins {
+//    // Apply the java plugin to add support for Java
+//    id 'java'
+//
+//    // Apply the application plugin to add support for building an application
+//    id 'application'
+//}
+//
+//apply plugin: 'java'
+
+
+
+// configure javafx-gradle-plugin
+//jfx {
+//    verbose = true
+//    mainClass = "App"
+//    jfxAppOutputDir = "build/jfx/app"
+//    jfxMainAppJarName = "estoque-jf.jar"
+//    deployDir = "src/main/deploy"
+//    useEnvironmentRelativeExecutables = true
+//    libFolderName = "lib"
+//
+//    // gradle jfxJar
+//    css2bin = false
+//    preLoader = null // String
+//    updateExistingJar = false
+//    allPermissions = false
+//    manifestAttributes = null // Map<String, String>
+//    addPackagerJar = true
+//    copyAdditionalAppResourcesToJar = false
+//    skipCopyingDependencies = false
+//    useLibFolderContentForManifestClasspath = false
+//    fixedManifestClasspath = null
+//
+//
+//}
+

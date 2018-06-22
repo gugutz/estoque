@@ -16,10 +16,8 @@ import javafx.fxml.Initializable;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ResourceBundle;
 
 
@@ -41,11 +39,8 @@ public class ListItems implements Initializable {
         Router router = new Router();
 
         try {
-            Connection connection = DB.connect();
 
-            Statement stmt = connection.createStatement();
-            ResultSet results = stmt.executeQuery(SQL_QUERY);
-
+            ResultSet results = DB.select(SQL_QUERY);
 
             /**********************************
              * TABLE COLUMN ADDED DYNAMICALLY *

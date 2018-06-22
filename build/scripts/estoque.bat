@@ -63,10 +63,10 @@ set CMD_LINE_ARGS=%*
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\estoque-1.0.jar
+set CLASSPATH=%APP_HOME%\lib\estoque-1.0.jar;%APP_HOME%\lib\sqlite-jdbc-3.23.1.jar
 
 @rem Execute estoque
-"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %ESTOQUE_OPTS%  -classpath "%CLASSPATH%" main.java.App %CMD_LINE_ARGS%
+"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %ESTOQUE_OPTS%  -classpath "%CLASSPATH%" App %CMD_LINE_ARGS%
 
 :end
 @rem End local scope for the variables with windows NT shell

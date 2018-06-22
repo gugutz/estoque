@@ -1,6 +1,5 @@
 Manifest-Version: 1.0
 Implementation-Title: Estoque App
 Implementation-Version: 1.0
-Class-Path: 
-Main-Class: main.java.App
+Main-Class: App
 

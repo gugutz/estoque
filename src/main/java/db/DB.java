@@ -2,9 +2,7 @@ package db;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Properties;
 
 public class DB {
@@ -12,39 +10,44 @@ public class DB {
     private static Properties dbProps = new Properties();
     private static Connection connection = null;
 
+
     public static Connection connect() throws SQLException {
 
-        // Database Information
-//        String driverClass = dbProps.getProperty("DB_DRIVER_CLASS");
-//        String host = dbProps.getProperty("DB_URL");
-//        String dbName = dbProps.getProperty("DB_NAME");
-//        String dbUser = dbProps.getProperty("DB_USERNAME");
-//        String dbPassword = dbProps.getProperty("DB_PASSWORD");
+        //            FileInputStream propsFile = new FileInputStream("src/main/resources/db/db.properties");
+//            dbProps.load(propsFile);
+        connection = DriverManager.getConnection("jdbc:sqlite::resource:db/app.db");
 
-        // Tries to connect
-        try {
-            FileInputStream propsFile = new FileInputStream("src/main/resources/db/db.properties");
-            dbProps.load(propsFile);
-
-            connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/db/app.db");
-//            connection = DriverManager.getConnection(host + dbName, dbUser, dbPassword);
-            if(connection != null) {
-                System.out.println("conected to db succesfully!");
-            }
-            else {
-                System.out.println("problema na conexao com banco de dados");
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("erro:" + e);
-
+        if(connection != null) {
+            System.out.println("conected to db succesfully!");
         }
-// finally {
-//            if (connection != null) {
-//                connection.close();
-//            }
-//        }
+        else {
+            System.out.println("problema na conexao com banco de dados");
+        }
+
+
         return connection;
+    }
+
+    public static void close() throws SQLException {
+        connection.close();
+    }
+
+    // adds method to execute a query e returns a resultset
+    public static ResultSet select(String query) throws SQLException {
+        Connection connection = DB.connect();
+        Statement stmt = connection.createStatement();
+        ResultSet results = stmt.executeQuery(query);
+        return results;
+    }
+
+    public static void delete(String query) throws SQLException {
+        Connection connection = DB.connect();
+        Statement stmt = connection.createStatement();
+        stmt.executeQuery(query);
+    }
+
+    public static void update(String query) throws SQLException {
+        Connection connection = DB.connect();
+        Statement stmt = connection.createStatement();
     }
 }
