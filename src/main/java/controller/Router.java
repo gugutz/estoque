@@ -17,6 +17,19 @@ public class Router {
 
     }
 
+
+
+    public BorderPane setContentPane(BorderPane contentPane, String path) throws IOException {
+        String contentLocation = "/fxml/";
+        String contentPath = (contentLocation + path + ".fxml");
+        contentPane.getChildren().clear();
+//        contentPane.setCenter(FXMLLoader.load(getClass().getResource(contentPath)));
+        contentPane.getChildren().add(FXMLLoader.load(getClass().getResource(contentPath)));
+//        contentPane.setLayoutX(0);
+//        contentPane.setLayoutY(0);
+        return contentPane;
+    }
+
     public void setRootPane(String path) throws IOException {
         String contentLocation = "/fxml/";
         String contentPath = (contentLocation + path + ".fxml");
@@ -46,7 +59,7 @@ public class Router {
 //        stage.show();
 //    }
 
-   public void newScreen(String path) throws IOException {
+   public void newScreen(ItemDetails path) throws IOException {
         String contentLocation = "/fxml/";
         String contentPath = (contentLocation + path + ".fxml");
         Parent mainScreenParent = FXMLLoader.load(getClass().getResource(contentPath));

@@ -27,7 +27,7 @@ public class ItemDetails extends BorderPane implements Initializable {
     @FXML
     public TextField field_id, field_codigo, field_descricao, field_linha, field_peso;
     @FXML
-    public Button buttonSave, buttonDelete, botaoPesquisar, buttonClearForm;
+    public Button buttonEdit, buttonDelete, botaoPesquisar, buttonClearForm;
     private int id;
     private String code;
     private String queryTerm;
@@ -42,13 +42,13 @@ public class ItemDetails extends BorderPane implements Initializable {
 
     private String column;
 
-    public ItemDetails() {
-        this.getStylesheets().add(getClass().getResource("/css/app.css").toExternalForm());
-    }
+    public ItemDetails() {};
 
-    public ItemDetails(int id) throws SQLException {
+
+    public ItemDetails(int id) {
         this.id = id;
-
+        this.getStylesheets().add(getClass().getResource("/css/app.css").toExternalForm());
+        this.getItem();
     }
 
     @Override

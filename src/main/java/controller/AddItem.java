@@ -4,12 +4,14 @@ import db.DB;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
 
 import java.sql.*;
 
-public class AddItem {
+public class AddItem extends BorderPane {
 
-    @FXML
+   @FXML
     public TextField productCode, productLine, productDescription, productWeight;
 
     public void addItemToDatabase(ActionEvent actionEvent)  {

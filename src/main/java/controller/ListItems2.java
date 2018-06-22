@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 
-public class ListItems2 implements Initializable {
+public class ListItems2 extends BorderPane implements Initializable {
 
     @FXML
     private TableView<TableItem> products_table;
@@ -71,14 +71,51 @@ public class ListItems2 implements Initializable {
         col_linha.setCellValueFactory(new PropertyValueFactory<>("linha"));
         col_peso.setCellValueFactory(new PropertyValueFactory<>("peso"));
 
-        //testing print of objects added to the list.
-        for (int i = 0; i < rowList.size(); i++) {
-            System.out.println(rowList.get(i));
-        }
 
-        //FINALLY ADDED TO TableView
-        products_table.setItems(row);
+    // building the context menu
+    //
+    final ContextMenu contextMenu = new ContextMenu();
+
+    // EDIT CONTEXT MENU
+    MenuItem item0 = new MenuItem("Editar Item");
+    item0.setOnAction(e -> {
+        try {
+            TableItem row = getSelectedItem();
+            int itemId = row.getId();
+            BorderPane details = new ItemDetails(itemId);
+            router.setContentPane(details, "ItemDetails");
+        } catch (IOException e1) {
+            System.out.println("nao achou tela do itemdetails");
+            e1.printStackTrace();
+        }
+        System.out.println("About");
+
+    });
+    MenuItem item1 = new MenuItem("Deletar Item");
+                item1.setOnAction(new EventHandler<ActionEvent>() {
+        public void handle(ActionEvent e) {
+            System.out.println("About");
+        }
+    });
+    MenuItem item2 = new MenuItem("Ver detalhes");
+                item2.setOnAction(new EventHandler<ActionEvent>() {
+        public void handle(ActionEvent e) {
+            System.out.println("Preferences");
+        }
+    });
+
+    // adding the submenu items to the context menu
+    contextMenu.getItems().addAll(item0, item1, item2);
+    products_table.setContextMenu(contextMenu);
+
+    //testing print of objects added to the list.
+    for (int i = 0; i < rowList.size(); i++) {
+        System.out.println(rowList.get(i));
     }
+
+    //FINALLY ADDED TO TableView
+    products_table.setItems(row);
+}
 
     public TableItem getSelectedItem() {
         TableItem selectedItem = products_table.getSelectionModel().getSelectedItem();
@@ -88,47 +125,7 @@ public class ListItems2 implements Initializable {
 
 
 
-    //
-//    // building the context menu
-//    //
-//    final ContextMenu contextMenu = new ContextMenu();
-//
-//    // EDIT CONTEXT MENU
-//    MenuItem item0 = new MenuItem("Editar Item");
-//                item0.setOnAction(new EventHandler<ActionEvent>() {
-//        public void handle(ActionEvent e) {
-//            try {
-//                TableItem row = getSelectedItem();
-//                int itemId = row.getId();
-//                ItemDetails details = new ItemDetails(itemId);
-//                router.newScreen("ItemDetails");
-//            } catch (IOException e1) {
-//                System.out.println("nao achou tela do itemdetails");
-//                e1.printStackTrace();
-//            } catch (SQLException e1) {
-//                e1.printStackTrace();
-//            }
-//            System.out.println("About");
-//        }
-//    });
-//    MenuItem item1 = new MenuItem("Deletar Item");
-//                item1.setOnAction(new EventHandler<ActionEvent>() {
-//        public void handle(ActionEvent e) {
-//            System.out.println("About");
-//        }
-//    });
-//    MenuItem item2 = new MenuItem("Ver detalhes");
-//                item2.setOnAction(new EventHandler<ActionEvent>() {
-//        public void handle(ActionEvent e) {
-//            System.out.println("Preferences");
-//        }
-//    });
-//
-//    // adding the submenu items to the context menu
-//                contextMenu.getItems().addAll(item0, item1, item2);
-//
-//                products_table.setContextMenu(contextMenu);
-//}
+
 
 }
 

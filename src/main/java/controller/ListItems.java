@@ -77,21 +77,21 @@ public class ListItems implements Initializable {
 
                 // EDIT CONTEXT MENU
                 MenuItem item0 = new MenuItem("Editar Item");
-                item0.setOnAction(new EventHandler<ActionEvent>() {
-                    public void handle(ActionEvent e) {
-                        try {
-                            int id = results.getInt("id");
-                            ItemDetails item = new ItemDetails(id);
-                            router.newScreen("ItemDetails");
-                        } catch (IOException e1) {
-                            System.out.println("nao achou tela do itemdetails");
-                            e1.printStackTrace();
-                        } catch (SQLException e1) {
-                            e1.printStackTrace();
-                        }
-                        System.out.println("About");
-                    }
-                });
+//                item0.setOnAction(new EventHandler<ActionEvent>() {
+//                    public void handle(ActionEvent e) {
+//                        try {
+//                            int id = results.getInt("id");
+//                            ItemDetails item = new ItemDetails(id);
+////                            router.newScreen("ItemDetails");
+//                        } catch (IOException e1) {
+//                            System.out.println("nao achou tela do itemdetails");
+//                            e1.printStackTrace();
+//                        } catch (SQLException e1) {
+//                            e1.printStackTrace();
+//                        }
+//                        System.out.println("About");
+//                    }
+//                });
                 MenuItem item1 = new MenuItem("Deletar Item");
                 item1.setOnAction(new EventHandler<ActionEvent>() {
                     public void handle(ActionEvent e) {
