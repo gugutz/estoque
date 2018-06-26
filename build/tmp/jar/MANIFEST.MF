@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
 Implementation-Title: Estoque App
 Implementation-Version: 1.0
-Main-Class: App
+Main-Class: controller.App
 

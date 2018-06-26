@@ -8,10 +8,9 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="rootPane" minHeight="400.0" minWidth="800.0" xmlns="http://javafx.com/javafx/8.0.162-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="App">
+<BorderPane id="root-pane" fx:id="rootPane" minHeight="400.0" minWidth="800.0" xmlns="http://javafx.com/javafx/8.0.162-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.App">
    <top>
       <VBox prefHeight="39.0" prefWidth="400.0" BorderPane.alignment="CENTER">
          <children>
@@ -42,24 +41,24 @@
             </MenuBar>
             <HBox>
                <children>
-                  <Button fx:id="linkMain" alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#linkMainClicked" text="Ver Estoque">
-                     <HBox.margin>
-                        <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-                     </HBox.margin></Button>
                   <Button fx:id="linkAddItem" alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#linkAddItemClicked" text="Adicionar Item">
-                     <HBox.margin>
-                        <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-                     </HBox.margin></Button>
-                  <Button fx:id="linkRemoveItem" alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#linkRemoveItemClicked" text="Remover Item">
                      <HBox.margin>
                         <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                      </HBox.margin></Button>
                   <Button fx:id="linkItemDetails" alignment="CENTER" defaultButton="true" layoutX="220.0" layoutY="10.0" mnemonicParsing="false" onAction="#linkItemDetailsClicked" text="Consultar Item">
                      <HBox.margin>
-                        <Insets bottom="6.0" left="6.0" right="46.0" top="6.0" />
+                        <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                      </HBox.margin>
                   </Button>
-                  <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="buttonListItems" alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#buttonListItemsClicked" text="Ver Estoque">
+                     <HBox.margin>
+                        <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                     </HBox.margin></Button>
+                  <Button fx:id="buttonListItems2" alignment="CENTER" defaultButton="true" disable="true" layoutX="302.0" layoutY="16.0" mnemonicParsing="false" onAction="#buttonListItems2Clicked" text="Tabela Dinamica">
+                     <HBox.margin>
+                        <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+                     </HBox.margin>
+                  </Button>
                </children>
             </HBox>
          </children>

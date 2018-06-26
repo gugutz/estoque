@@ -1,7 +1,5 @@
 package db;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 
@@ -40,10 +38,11 @@ public class DB {
         return results;
     }
 
-    public static void delete(String query) throws SQLException {
+    public static ResultSet delete(String query) throws SQLException {
         Connection connection = DB.connect();
         Statement stmt = connection.createStatement();
-        stmt.executeQuery(query);
+        ResultSet results = stmt.executeQuery(query);
+        return results;
     }
 
     public static void update(String query) throws SQLException {

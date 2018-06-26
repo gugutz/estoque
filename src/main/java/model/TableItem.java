@@ -4,17 +4,27 @@ public class TableItem {
 
     private Integer id;
     private String codigo;
-    private String description;
-    private String line;
+    private String descricao;
+    private String linha;
+    private Integer qtde;
     private Double peso;
 
-    public TableItem(Integer id, String codigo, String description, String line, Double peso) {
+    public TableItem(Integer id, String codigo, Integer qtde) {
         this.id = id;
         this.codigo = codigo;
-        this.description = description;
-        this.line = line;
+        this.qtde = qtde;
+    }
+
+    public TableItem(Integer id, String codigo, String descricao, String linha, Integer qtde, Double peso) {
+        this.id = id;
+        this.codigo = codigo;
+        this.descricao = descricao;
+        this.linha = linha;
+        this.qtde = qtde;
         this.peso = peso;
     }
+
+
 
     public Integer getId() {
         return id;
@@ -24,28 +34,37 @@ public class TableItem {
         this.id = id;
     }
 
-    public String getCodigo() {
-        return codigo;
-    }
-
     public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
 
-    public String getDescription() {
-        return description;
+    public String getCodigo() {
+        return codigo;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public String getLine() {
-        return line;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
-    public void setLine(String line) {
-        this.line = line;
+    public String getLinha() {
+        return linha;
+    }
+
+    public void setLinha(String linha) {
+        this.linha = linha;
+    }
+
+
+   public Integer getQtde() {
+        return qtde;
+    }
+
+    public void setQtde(Integer qtde) {
+        this.qtde = qtde;
     }
 
     public Double getPeso() {
