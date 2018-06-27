@@ -2,18 +2,12 @@ package controller;
 
 import db.DB;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,49 +22,44 @@ import java.util.ResourceBundle;
 
 public class ItemDetails implements Initializable {
 
-    private final Router router;
-    @FXML
-
-
     //TODO for some reason the Spinner element cannot have a snake_cased name, so i had to cammelCase only that specific field. go figure...
+    @FXML
     public TextField field_id, field_codigo, field_descricao, field_linha, field_qtde, field_peso;
-
     @FXML
     public Button buttonEdit, buttonDelete, botaoPesquisar, buttonClearForm;
-
-    private String code;
-    private String queryTerm;
-
-    private TableView products_table;
-    private static int id;
-
-    public ItemDetails(Router router) {
-       this.router = router;
-    }
-
-
-    public static void setId(int id) {
-        ItemDetails.id = id;
-    }
-
     // Creating the radio buttons that will settle the type of search (id or name)
     @FXML
     RadioButton radioSearchById, radioSearchByCode;
+
+
+    private Integer id;
+    private String code;
+    private String queryTerm;
+
 
     // a classe ToogleGroup agrupa os botoes de radio, e facilitar extrair o item selecionado
     final ToggleGroup searchType = new ToggleGroup();
 
     private String column;
 
-    public ItemDetails() throws IOException {
+
+    // ************************************************
+    // Constructors
+
+    public ItemDetails() {
         this.column = "rowid";
-        this.router = null;
+        this.id = -1;
     }
 
 
-//    public void loadScreen() throws IOException {
-//        setContentPane("ItemDetails");
-//    }
+    // constructor overload
+    public ItemDetails(Integer itemId) {
+        this.column = "rowid";
+        this.id = itemId;
+        this.queryTerm = String.valueOf(this.id);
+    }
+
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -82,8 +71,8 @@ public class ItemDetails implements Initializable {
 
         setSearchType("id");
 
-        if (id > 0) {
-            getItem(id);
+        if (this.id >= 0) {
+            getItem(this.id);
         }
     }
 

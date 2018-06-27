@@ -54,7 +54,6 @@ public class Router {
         return contentPane;
     }
 
-
     public void setRootPane(String path) throws IOException {
         String contentLocation = "/fxml/";
         String contentPath = (contentLocation + path + ".fxml");

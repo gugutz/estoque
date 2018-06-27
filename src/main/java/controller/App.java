@@ -8,6 +8,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -24,10 +26,9 @@ public class App extends Application implements Initializable {
     @FXML
     private BorderPane rootPane, contentPane;
     @FXML
-    private Button linkMain, linkAddItem, linkRemoveItem, linkItemDetails;
+    private Button linkMain, linkAddItem, linkRemoveItem, linkItemDetails, buttonQuit;
     @FXML
     private Label bottomInfoLabel;
-
 
     Router router;
 
@@ -89,12 +90,6 @@ public class App extends Application implements Initializable {
         return loader;
     }
 
-    public void setContentPane(String path) throws IOException {
-        FXMLLoader content = getContentNode(path);
-//        content.setController();
-//        contentPane = (BorderPane) rootPane.getChildren();
-        this.contentPane.setCenter(content.load());
-    }
 
     public BorderPane getContentPane() {
         return contentPane;
@@ -110,8 +105,8 @@ public class App extends Application implements Initializable {
     // EVENT LISTENERS
     // ******************************************************************************
     public void buttonListItemsClicked(ActionEvent actionEvent) throws IOException {
-        router.setContentPane(contentPane, "ListItems");
-        ItemDetails itemDetails = new ItemDetails(this.router);
+         BorderPane newContent =  router.setContentPane(contentPane, "ListItems");
+
     }
 
     public void buttonListItems2Clicked(ActionEvent actionEvent) throws IOException {
@@ -127,7 +122,8 @@ public class App extends Application implements Initializable {
         router.setContentPane(contentPane, "ItemDetails");
     }
 
-    public void closeApplication(ActionEvent e) {
+
+    public void closeApplication() {
         Platform.exit();
         System.exit(0);
     }
@@ -144,7 +140,11 @@ public class App extends Application implements Initializable {
             e.printStackTrace();
         }
 
-
+        buttonQuit.setOnKeyPressed((KeyEvent e) -> {
+            if(e.getCode() == KeyCode.ENTER) {
+                closeApplication();
+            }
+        });
     }
 }
 

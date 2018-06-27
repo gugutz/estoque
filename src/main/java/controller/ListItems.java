@@ -25,6 +25,10 @@ import java.util.ResourceBundle;
 public class ListItems implements Initializable {
 
 
+    private ObservableList<TableItem> row = FXCollections.observableArrayList();
+    private Router router;
+    private List<TableItem> rowList;
+
     @FXML
     private TableView<TableItem> products_table;
     @FXML
@@ -40,19 +44,13 @@ public class ListItems implements Initializable {
     @FXML
     private TableColumn col_peso;
 
-    private ObservableList<TableItem> row = FXCollections.observableArrayList();
 
-    List<TableItem> rowList = new ArrayList<>();
 
     private static final String SQL_QUERY = "SELECT rowid, codigo, descricao, linha, qtde, peso from perfis;";
 
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-
-        // instantiating a router object to change panes when needed
 
         try {
 
@@ -112,10 +110,10 @@ public class ListItems implements Initializable {
         item0.setOnAction((ActionEvent e) -> {
             TableItem row = getSelectedItem();
             int itemId = row.getId();
-            ItemDetails.setId(itemId);
-            FXMLLoader loader = null;
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/ItemDetails.fxml"));
+            fxmlLoader.setController(new ItemDetails(itemId));
             try {
-                FXRouter.goTo("itemDetails");
+                fxmlLoader.load();
                 System.out.println("About");
             } catch (IOException e1) {
                 e1.printStackTrace();
