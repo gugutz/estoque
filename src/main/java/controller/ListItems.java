@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import model.TableItem;
 
 import java.io.IOException;
@@ -22,12 +23,12 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 
-public class ListItems implements Initializable {
+public class ListItems extends BorderPane implements Initializable {
 
 
     private ObservableList<TableItem> row = FXCollections.observableArrayList();
     private Router router;
-    private List<TableItem> rowList;
+    private List<TableItem> rowList = new ArrayList<>();
 
     @FXML
     private TableView<TableItem> products_table;
@@ -47,6 +48,10 @@ public class ListItems implements Initializable {
 
 
     private static final String SQL_QUERY = "SELECT rowid, codigo, descricao, linha, qtde, peso from perfis;";
+
+    public ListItems(Router router) {
+        this.router = router;
+    }
 
 
     @Override
@@ -111,10 +116,12 @@ public class ListItems implements Initializable {
             TableItem row = getSelectedItem();
             int itemId = row.getId();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/ItemDetails.fxml"));
-            fxmlLoader.setController(new ItemDetails(itemId));
+            ItemDetails itemDetails = new ItemDetails(itemId);
+            fxmlLoader.setController(itemDetails);
+            fxmlLoader.setRoot(itemDetails);
             try {
                 fxmlLoader.load();
-                System.out.println("About");
+                System.out.println("Item selecionado: " + itemId);
             } catch (IOException e1) {
                 e1.printStackTrace();
             }

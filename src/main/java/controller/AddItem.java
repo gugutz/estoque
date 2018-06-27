@@ -78,7 +78,7 @@ public class AddItem implements Initializable {
 
         try {
 
-            String selectQuery = "SELECT rowid, codigo, qtde from perfis;";
+            String selectQuery = "SELECT rowid, codigo, qtde FROM perfis ORDER BY rowid DESC;";
             results = DB.select(selectQuery);
 
             while (results.next()) {

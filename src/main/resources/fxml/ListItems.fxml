@@ -4,7 +4,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane prefHeight="321.0" prefWidth="583.0" xmlns="http://javafx.com/javafx/8.0.162-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ListItems">
+<fx:root prefHeight="321.0" prefWidth="583.0" type="BorderPane" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <TableView fx:id="products_table" editable="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
          <columnResizePolicy>
@@ -20,4 +20,4 @@
          </columns>
       </TableView>
    </center>
-</BorderPane>
+</fx:root>

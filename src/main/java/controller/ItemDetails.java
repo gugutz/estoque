@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,7 +21,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 
-public class ItemDetails implements Initializable {
+public class ItemDetails extends BorderPane implements Initializable {
 
     //TODO for some reason the Spinner element cannot have a snake_cased name, so i had to cammelCase only that specific field. go figure...
     @FXML
@@ -35,26 +36,25 @@ public class ItemDetails implements Initializable {
     private Integer id;
     private String code;
     private String queryTerm;
+    private String column;
 
 
     // a classe ToogleGroup agrupa os botoes de radio, e facilitar extrair o item selecionado
     final ToggleGroup searchType = new ToggleGroup();
 
-    private String column;
 
 
     // ************************************************
     // Constructors
 
     public ItemDetails() {
-        this.column = "rowid";
-        this.id = -1;
+        this.column = null;
+        this.id = null;
     }
 
 
     // constructor overload
     public ItemDetails(Integer itemId) {
-        this.column = "rowid";
         this.id = itemId;
         this.queryTerm = String.valueOf(this.id);
     }
@@ -71,15 +71,28 @@ public class ItemDetails implements Initializable {
 
         setSearchType("id");
 
-        if (this.id >= 0) {
-            getItem(this.id);
+        if (this.id != null) {
+            getItem();
         }
     }
 
 
     public void onBotaoPesquisarClicked(ActionEvent e) {
-        int id = Integer.parseInt(field_id.getText());
-        getItem(id);
+//        int id = Integer.parseInt(field_id.getText());
+        if (this.radioSearchById.isSelected()) {
+            this.queryTerm = field_id.getText();
+            this.column = "rowid";
+
+        }
+        if (this.radioSearchByCode.isSelected()) {
+            this.queryTerm = field_codigo.getText();
+            this.column = new String("codigo");
+        }
+        if (this.id != null) {
+            this.column = "rowid";
+            this.queryTerm = String.valueOf(this.id);
+        }
+        getItem();
     }
 
 
@@ -91,15 +104,16 @@ public class ItemDetails implements Initializable {
     public void onButtonDeleteClicked(ActionEvent e) throws SQLException {
         DB.close();
         String id = field_id.getText();
-        final String query = "DELETE FROM perfis WHERE rowid = " + id + ";";
+        String query = "DELETE FROM perfis WHERE rowid = " + id + ";";
         DB.delete(query);
         clearForm();
+        DB.close();
     }
 
 
     public void onButtonEditClicked(ActionEvent e) throws SQLException {
         DB.close();
-        final String QUERY = "UPDATE perfis SET codigo = ?, descricao = ?, linha = ?, qtde = ?, peso = ? WHERE rowid = ?";
+        String QUERY = "UPDATE perfis SET codigo = ?, descricao = ?, linha = ?, qtde = ?, peso = ? WHERE rowid = ?";
         Connection connection = DB.connect();
         PreparedStatement statement = connection.prepareStatement(QUERY);
 
@@ -112,6 +126,7 @@ public class ItemDetails implements Initializable {
 
         statement.executeUpdate();
         DB.update(QUERY);
+        DB.close();
     }
 
 
@@ -125,6 +140,8 @@ public class ItemDetails implements Initializable {
 
     public void setSearchType(String searchType) {
         if (searchType == "id") {
+            clearForm();
+            this.column = "rowid";
             field_id.setDisable(false);
             field_codigo.setDisable(true);
             field_descricao.setDisable(true);
@@ -132,6 +149,8 @@ public class ItemDetails implements Initializable {
             field_qtde.setDisable(true);
             field_peso.setDisable(true);
         } else if (searchType == "code") {
+            clearForm();
+            this.column = "codigo";
             field_id.setDisable(true);
             field_codigo.setDisable(false);
             field_descricao.setDisable(true);
@@ -141,32 +160,27 @@ public class ItemDetails implements Initializable {
         }
     }
 
+    public void enableFields() {
+        field_id.setDisable(false);
+        field_codigo.setDisable(false);
+        field_descricao.setDisable(false);
+        field_linha.setDisable(false);
+        field_qtde.setDisable(false);
+        field_peso.setDisable(false);
+    }
 
-    public void getItem(int id) {
-        if (this.radioSearchById.isSelected()) {
-            this.queryTerm = field_id.getText();
-            this.column = "rowid";
-        } else if (this.radioSearchById.isSelected()) {
-            this.queryTerm = field_codigo.getText();
-            this.column = "codigo";
-        } else {
-            String msg = "Você deve selecionar um tipo de consulta";
-            System.out.println(msg);
-        }
 
-        final String SQL_QUERY = "SELECT rowid, codigo, descricao, linha, qtde, peso from perfis where " + this.column + " = " + this.queryTerm + ";";
+    public void getItem() {
 
+        ResultSet results;
+        String SQL_QUERY = "SELECT rowid, codigo, descricao, linha, qtde, peso FROM perfis WHERE " + this.column + " = " + this.queryTerm + ";";
         try {
-            ResultSet results = DB.select(SQL_QUERY);
+            System.out.println("Coluna sendo usada para pesquisa: " + this.column);
+            System.out.println("Termo de pesquisa sendo usado: " + this.queryTerm);
+            results = DB.select(SQL_QUERY);
             if (!results.isClosed()) {
 
-                // enable all fields first
-                field_id.setDisable(false);
-                field_codigo.setDisable(false);
-                field_descricao.setDisable(false);
-                field_linha.setDisable(false);
-                field_qtde.setDisable(false);
-                field_peso.setDisable(false);
+                enableFields();
 
                 // sets the values retrieved from the database
                 this.field_id.setText(String.valueOf(results.getInt("rowid")));
@@ -177,9 +191,11 @@ public class ItemDetails implements Initializable {
                 field_peso.setText(String.valueOf(results.getDouble("peso")));
 
             } else {
-                System.out.println("a consulta nao retornou nada");
+                System.out.println("A consulta nao retornou nada");
                 return;
             }
+
+            results.close();
 
         } catch (SQLException e1) {
             e1.printStackTrace();
@@ -187,11 +203,12 @@ public class ItemDetails implements Initializable {
     }
 
         public void clearForm () {
-                field_id.setText("");
-                field_codigo.setText("");
-                field_descricao.setText("");
-                field_linha.setText("");
-                field_peso.setText("");
+                field_id.clear();
+                field_codigo.clear();
+                field_descricao.clear();
+                field_linha.clear();
+                field_qtde.clear();
+                field_peso.clear();
         }
     }
 

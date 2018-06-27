@@ -38,11 +38,15 @@ public class DB {
         return results;
     }
 
-    public static ResultSet delete(String query) throws SQLException {
+    public static void delete(String query) throws SQLException {
         Connection connection = DB.connect();
         Statement stmt = connection.createStatement();
-        ResultSet results = stmt.executeQuery(query);
-        return results;
+        try {
+            stmt.executeUpdate(query);
+            System.out.println("Item Deletado.");
+        } catch (Exception e) {
+            System.out.println("Erro ao deletar: " + e);
+        }
     }
 
     public static void update(String query) throws SQLException {

@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -22,6 +23,7 @@ public class App extends Application implements Initializable {
 
 
     private Stage stage;
+    private Scene mainScene;
 
     @FXML
     private BorderPane rootPane, contentPane;
@@ -48,7 +50,7 @@ public class App extends Application implements Initializable {
         Parent rootElement = FXMLLoader.load(getClass().getResource("/fxml/Main.fxml"));
         int mainSceneWidth = 1000;
         int mainSceneHeight = 720;
-        Scene mainScene = new Scene(rootElement, mainSceneWidth, mainSceneHeight);
+        mainScene = new Scene(rootElement, mainSceneWidth, mainSceneHeight);
         mainScene.getStylesheets().add("css/app.css");
 
         // set the stage
@@ -105,8 +107,14 @@ public class App extends Application implements Initializable {
     // EVENT LISTENERS
     // ******************************************************************************
     public void buttonListItemsClicked(ActionEvent actionEvent) throws IOException {
-         BorderPane newContent =  router.setContentPane(contentPane, "ListItems");
+//         router.setContentPane(contentPane, "ListItems");
 
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/ListItems.fxml"));
+        ListItems listItems = new ListItems(this.router);
+        fxmlLoader.setController(listItems);
+        fxmlLoader.setRoot(listItems);
+        contentPane.getChildren().clear();
+        contentPane.getChildren().add(fxmlLoader.load());
     }
 
     public void buttonListItems2Clicked(ActionEvent actionEvent) throws IOException {
@@ -119,7 +127,19 @@ public class App extends Application implements Initializable {
 
 
     public void linkItemDetailsClicked(ActionEvent actionEvent) throws IOException {
-        router.setContentPane(contentPane, "ItemDetails");
+//        router.setContentPane(contentPane, "ItemDetails");
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/ItemDetails.fxml"));
+        ItemDetails itemDetails = new ItemDetails();
+        fxmlLoader.setController(itemDetails);
+        fxmlLoader.setRoot(itemDetails);
+        contentPane.getChildren().clear();
+        contentPane.getChildren().add(fxmlLoader.load());
+        fxmlLoader.load();
+    }
+
+
+    public void onMenuAboutClicked(ActionEvent actionEvent) throws IOException {
+        router.newWindow(200, 200, "ListItems");
     }
 
 
@@ -145,6 +165,10 @@ public class App extends Application implements Initializable {
                 closeApplication();
             }
         });
+        buttonQuit.setOnMouseClicked((MouseEvent e) -> {
+            closeApplication();
+           }
+        );
     }
 }
 

@@ -3,7 +3,6 @@ package controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -11,38 +10,43 @@ import java.io.IOException;
 
 
 
-public class Router {
+public class Router implements RouterFX{
 
-    BorderPane paneToChange;
+    private Stage stage;
+    private BorderPane contentPane;
+
 
     public Router() {
-
-
     }
 
     public Router(BorderPane contentPane) {
-        this.paneToChange = contentPane;
+        this.contentPane = contentPane;
     }
 
 
-
-    public void setStage(Scene scene) {
-        Stage stage = (Stage) paneToChange.getScene().getWindow();
-    }
-
-    public void setSceneSize(Stage stage, BorderPane contentPane, int width, int height) throws IOException {
-        stage = (Stage) contentPane.getScene().getWindow();
-        Parent currentParent = contentPane.getParent();
-        Scene resizedScene = new Scene(currentParent, width, height);
-        setStage(resizedScene);
-    }
-
-    public Scene getMainScene() throws IOException {
+    public Scene getMainScene() {
         Scene mainScene = (Scene) this.getMainScene();
         return mainScene;
     }
 
 
+    @Override
+    public Stage newStage() {
+        Stage stage = (Stage) contentPane.getScene().getWindow();
+        return stage;
+    }
+
+    @Override
+    public Scene newScene(Stage stage, String path) {
+        return null;
+    }
+
+    @Override
+    public Parent newParent(Scene scene, String path) {
+        return null;
+    }
+
+    @Override
     public BorderPane setContentPane(BorderPane contentPane, String path) throws IOException {
         String contentLocation = "/fxml/";
         String contentPath = (contentLocation + path + ".fxml");
@@ -54,7 +58,20 @@ public class Router {
         return contentPane;
     }
 
-    public void setRootPane(String path) throws IOException {
+    @Override
+    public Routes generateRoutes() {
+        return null;
+    }
+
+    @Override
+    public void resizeScene(int width, int height) {
+        this.stage = (Stage) contentPane.getScene().getWindow();
+        Parent currentParent = contentPane.getParent();
+        Scene resizedScene = new Scene(currentParent, width, height);
+        setStage(resizedScene);
+    }
+
+    public void setRootPane(String path) {
         String contentLocation = "/fxml/";
         String contentPath = (contentLocation + path + ".fxml");
 //        rootPane.getChildren().clear();
@@ -63,7 +80,10 @@ public class Router {
 //        rootPane.setLayoutY(0);
     }
 
-
+    @Override
+    public void setStage(Scene newScene) {
+//        this.stage = (Stage) contentPane.getClass().getScene().getWindow();
+    }
 
 
 //    public Stage getCurrentStage () {
@@ -83,15 +103,17 @@ public class Router {
 //        stage.show();
 //    }
 
-   public void newScreen(ItemDetails path) throws IOException {
+
+    public void newWindow(int width, int height, String path) throws IOException {
         String contentLocation = "/fxml/";
         String contentPath = (contentLocation + path + ".fxml");
         Parent mainScreenParent = FXMLLoader.load(getClass().getResource(contentPath));
-        Scene mainScreenScene = new Scene(mainScreenParent, 800, 400);
+        Scene mainScreenScene = new Scene(mainScreenParent, width, height);
         // sets the scene to the main stage
         Stage stage = new Stage();
         stage.setScene(mainScreenScene);
         stage.show();
+        System.out.println("Sistema de Estoque v1");
     }
 }
 
